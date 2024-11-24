@@ -40,5 +40,18 @@ public class BookController {
         bookService.deleteBook(id);
         return ResponseEntity.ok("Book deleted successfully.");
     }
+
+
+    @PostMapping("/{id}/borrow")
+    public ResponseEntity<Boolean> borrowBook(@PathVariable Long id) {
+        boolean success = bookService.borrowBook(id);
+        return ResponseEntity.ok(success);
+    }
+
+    @PostMapping("/{id}/return")
+    public ResponseEntity<Void> returnBook(@PathVariable Long id) {
+        bookService.returnBook(id);
+        return ResponseEntity.ok().build();
+    }
 }
 
