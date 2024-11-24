@@ -36,5 +36,25 @@ public class BookService {
             bookRepository.deleteById(id);
         }
     }
+
+    public boolean borrowBook(Long bookId) {
+        Book book = bookRepository.findById(bookId).orElse(null);
+
+        if (book != null && book.getAvailability()) {
+            book.setAvailability(false);
+            bookRepository.save(book);
+            return true;
+        }
+        return false;
+    }
+
+    public void returnBook(Long bookId) {
+        Book book = bookRepository.findById(bookId).orElse(null);
+
+        if (book != null) {
+            book.setAvailability(true);
+            bookRepository.save(book);
+        }
+    }
 }
 
