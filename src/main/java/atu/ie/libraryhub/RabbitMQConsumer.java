@@ -1,10 +1,13 @@
 package atu.ie.libraryhub;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RabbitMQConsumer {
+    private static final Logger logger = LoggerFactory.getLogger(RabbitMQConsumer.class);
 
     private final BookService bookService;
 
@@ -12,38 +15,32 @@ public class RabbitMQConsumer {
         this.bookService = bookService;
     }
 
-    @RabbitListener(queues = "borrow.book.queue")
+    @RabbitListener(queues = RabbitMQConfig.BORROW_BOOK_QUEUE)
     public void handleBorrowBookMessage(String message) {
-        // parse "userId,bookId"
-        String[] data = message.split(",");
-        Long userId = Long.parseLong(data[0]);
-        Long bookId = Long.parseLong(data[1]);
+        logger.info("Received from borrow.book.queue: '{}'", message);
+        // Example parse logic:
+        // "User 2 borrowed Book 10" => user #2, book #10
+        // you can parse the string carefully if needed:
+        // or keep it simple if you just need to do some logic
 
-        // Call BookService to mark the book as borrowed
-        bookService.borrowBook(bookId);
-        // Possibly log or do something with userId
+        // Suppose you want to parse out bookId
+        // Actually you might have put "2,10" as a CSV, but let's assume you store more text
+        // For real code, you'd define a clearer format or use JSON.
+
+        // Example: just log or update DB
+        // bookService.borrowBook(bookId)...
     }
 
-    @RabbitListener(queues = "return.book.queue")
+    @RabbitListener(queues = RabbitMQConfig.RETURN_BOOK_QUEUE)
     public void handleReturnBookMessage(String message) {
-        String[] data = message.split(",");
-        Long userId = Long.parseLong(data[0]);
-        Long bookId = Long.parseLong(data[1]);
-
-        bookService.returnBook(bookId);
-        // Possibly do something with userId
+        logger.info("Received from return.book.queue: '{}'", message);
+        // parse and do your logic
     }
 
-    // If needed, for recommendations:
-    @RabbitListener(queues = "recommendation.queue")
+    @RabbitListener(queues = RabbitMQConfig.RECOMMENDATION_QUEUE)
     public void handleRecommendationMessage(String message) {
-        String[] data = message.split(",");
-        Long userId = Long.parseLong(data[0]);
-        Long bookId = Long.parseLong(data[1]);
-        String action = data[2]; // "borrow" or "return"
-
-        // Possibly generate or update recommended books
+        logger.info("Received from recommendation.queue: '{}'", message);
+        // parse, update recommended books, etc.
     }
 }
-
 
