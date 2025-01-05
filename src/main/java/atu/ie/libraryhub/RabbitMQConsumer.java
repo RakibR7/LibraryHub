@@ -1,27 +1,33 @@
 package atu.ie.libraryhub;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RabbitMQConsumer {
+    private static final Logger logger = LoggerFactory.getLogger(RabbitMQConsumer.class);
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
 
-    @RabbitListener(queues = "borrow.book.queue")
-    public void handleBorrowBookMessage(String message) {
-        String[] data = message.split(",");
-        Long bookId = Long.parseLong(data[1]);
-        bookService.borrowBook(bookId);
+    public RabbitMQConsumer(BookService bookService) {
+        this.bookService = bookService;
     }
 
-    @RabbitListener(queues = "return.book.queue")
-    public void handleReturnBookMessage(String message) {
-        String[] data = message.split(",");
-        Long bookId = Long.parseLong(data[1]);
-        bookService.returnBook(bookId);
+    @RabbitListener(queues = RabbitMQConfig.BORROW_BOOK_QUEUE)
+    public void receiveBorrowBookMessage(String message) throws InterruptedException {
+        System.out.println("Received message: " + message);
+        // Simulate processing delay
+        Thread.sleep(5000); // 5-second delay
+    }
+
+
+    @RabbitListener(queues = RabbitMQConfig.RETURN_BOOK_QUEUE)
+    public void handleReturnBookMessage(String message) throws InterruptedException {
+        System.out.println("Received message: " + message);
+        // parse and do your logic
+        Thread.sleep(5000); // 5-second delay
     }
 }
 
