@@ -16,31 +16,17 @@ public class RabbitMQConsumer {
     }
 
     @RabbitListener(queues = RabbitMQConfig.BORROW_BOOK_QUEUE)
-    public void handleBorrowBookMessage(String message) {
-        logger.info("Received from borrow.book.queue: '{}'", message);
-        // Example parse logic:
-        // "User 2 borrowed Book 10" => user #2, book #10
-        // you can parse the string carefully if needed:
-        // or keep it simple if you just need to do some logic
-
-        // Suppose you want to parse out bookId
-        // Actually you might have put "2,10" as a CSV, but let's assume you store more text
-        // For real code, you'd define a clearer format or use JSON.
-
-        // Example: just log or update DB
-        // bookService.borrowBook(bookId)...
+    public void receiveBorrowBookMessage(String message) throws InterruptedException {
+        System.out.println("Received message: " + message);
+        // Simulate processing delay
+        Thread.sleep(5000); // 5-second delay
     }
+
 
     @RabbitListener(queues = RabbitMQConfig.RETURN_BOOK_QUEUE)
     public void handleReturnBookMessage(String message) {
         logger.info("Received from return.book.queue: '{}'", message);
         // parse and do your logic
-    }
-
-    @RabbitListener(queues = RabbitMQConfig.RECOMMENDATION_QUEUE)
-    public void handleRecommendationMessage(String message) {
-        logger.info("Received from recommendation.queue: '{}'", message);
-        // parse, update recommended books, etc.
     }
 }
 
