@@ -24,9 +24,10 @@ public class RabbitMQConsumer {
 
 
     @RabbitListener(queues = RabbitMQConfig.RETURN_BOOK_QUEUE)
-    public void handleReturnBookMessage(String message) {
-        logger.info("Received from return.book.queue: '{}'", message);
+    public void handleReturnBookMessage(String message) throws InterruptedException {
+        System.out.println("Received message: " + message);
         // parse and do your logic
+        Thread.sleep(5000); // 5-second delay
     }
 }
 
