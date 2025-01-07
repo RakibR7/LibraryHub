@@ -26,5 +26,6 @@ spec:
               value: root
             - name: SPRING_DATASOURCE_PASSWORD
               value: mysqlpassword
+            # Possibly RabbitMQ connection for asynchronous communication
             - name: SPRING_RABBITMQ_HOST
               value: rabbitmq
