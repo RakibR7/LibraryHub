@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline - LibraryHub
 
 on:
   push:
@@ -39,10 +39,10 @@ jobs:
 
       - name: Build Docker Image for LibraryHub
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/LibraryHub:latest .
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/LibraryHub:latest ${{ secrets.DOCKERHUB_USERNAME }}/LibraryHub:${{ github.run_number }}
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/libraryhub:latest .
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/libraryhub:latest ${{ secrets.DOCKERHUB_USERNAME }}/libraryhub:${{ github.run_number }}
 
       - name: Push LibraryHub Image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/LibraryHub:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/LibraryHub:${{ github.run_number }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/libraryhub:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/libraryhub:${{ github.run_number }}
