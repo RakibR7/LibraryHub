@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: libraryhub-deployment
+  labels:
+    app: libraryhub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: libraryhub
+  template:
+    metadata:
+      labels:
+        app: libraryhub
+    spec:
+      containers:
+        - name: libraryhub
+          image: your-dockerhub-username/libraryhub:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql:3306/hub_db
+            - name: SPRING_DATASOURCE_USERNAME
+              value: root
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: mysqlpassword
+            # Possibly RabbitMQ connection for asynchronous communication
+            - name: SPRING_RABBITMQ_HOST
+              value: rabbitmq
