@@ -8,26 +8,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class RabbitMQConsumer {
     private static final Logger logger = LoggerFactory.getLogger(RabbitMQConsumer.class);
-
     private final BookService bookService;
-
     public RabbitMQConsumer(BookService bookService) {
         this.bookService = bookService;
     }
-
     @RabbitListener(queues = RabbitMQConfig.BORROW_BOOK_QUEUE)
     public void receiveBorrowBookMessage(String message) throws InterruptedException {
         System.out.println("Received message: " + message);
-        // Simulate processing delay
-        Thread.sleep(5000); // 5-second delay
+        Thread.sleep(5000);
     }
-
-
     @RabbitListener(queues = RabbitMQConfig.RETURN_BOOK_QUEUE)
     public void handleReturnBookMessage(String message) throws InterruptedException {
         System.out.println("Received message: " + message);
-        // parse and do your logic
-        Thread.sleep(5000); // 5-second delay
+        Thread.sleep(5000);
     }
 }
-

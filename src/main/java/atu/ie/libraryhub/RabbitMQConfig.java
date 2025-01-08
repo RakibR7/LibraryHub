@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
     private static final Logger logger = LoggerFactory.getLogger(RabbitMQConfig.class);
 
-    // Queue names
     public static final String BORROW_BOOK_QUEUE = "borrow.book.queue";
     public static final String RETURN_BOOK_QUEUE = "return.book.queue";
 
